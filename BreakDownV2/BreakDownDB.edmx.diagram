@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="386b650ee60845668ef4307c131b9e12" Name="Diagram1">
+        <EntityTypeShape EntityType="BreakDownModel.Brake" Width="1.5" PointX="5.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.Make" Width="1.5" PointX="0.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.Oil" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.OilType" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.Service" Width="1.5" PointX="7.5" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.sysdiagram" Width="1.5" PointX="0.75" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.TuneUp" Width="1.5" PointX="5.25" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.Vehicle" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BreakDownModel.VehicleModel" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="BreakDownModel.FK_Brakes_Vehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Services_Brakes" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Vehicle_Make" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Oil_OilType" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Oil_Vehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Services_Oil" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Services_TuneUp" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Services_Vehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_TuneUp_Vehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="BreakDownModel.FK_Vehicle_VehicleModel" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

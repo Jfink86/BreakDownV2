@@ -1,0 +1,701 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BreakDownModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Brakes">
+          <Key>
+            <PropertyRef Name="BrakesID" />
+          </Key>
+          <Property Name="BrakesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="FrontBool" Type="bit" Nullable="false" />
+          <Property Name="RearBool" Type="bit" Nullable="false" />
+          <Property Name="ODOServiced" Type="int" Nullable="false" />
+          <Property Name="NextODO" Type="int" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Make">
+          <Key>
+            <PropertyRef Name="MakeID" />
+          </Key>
+          <Property Name="MakeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MakeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Oil">
+          <Key>
+            <PropertyRef Name="OilID" />
+          </Key>
+          <Property Name="OilID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="ODOService" Type="int" Nullable="false" />
+          <Property Name="OilType" Type="int" Nullable="false" />
+          <Property Name="NextODO" Type="int" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="datetime" Type="datetime" Nullable="false" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="OilType">
+          <Key>
+            <PropertyRef Name="OilTypeID" />
+          </Key>
+          <Property Name="OilTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OilTypeName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Services">
+          <Key>
+            <PropertyRef Name="ServiceID" />
+          </Key>
+          <Property Name="ServiceID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OilID" Type="int" Nullable="false" />
+          <Property Name="BrakesID" Type="int" Nullable="false" />
+          <Property Name="TuneUpID" Type="int" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TuneUp">
+          <Key>
+            <PropertyRef Name="TuneUpID" />
+          </Key>
+          <Property Name="TuneUpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="PlugsChanged" Type="bit" Nullable="false" />
+          <Property Name="BeltCondition" Type="int" Nullable="false" />
+          <Property Name="TireCondition" Type="int" Nullable="false" />
+          <Property Name="ODOServiced" Type="int" Nullable="false" />
+          <Property Name="NextODO" Type="int" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="500" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="500" />
+          <Property Name="DateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="VehicleID" />
+          </Key>
+          <Property Name="VehicleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MakeID" Type="int" Nullable="false" />
+          <Property Name="ModelID" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="ODO" Type="int" Nullable="false" />
+          <Property Name="Pin" Type="int" />
+          <Property Name="ID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Photo" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="VehicleModel">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Brakes_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Brakes" Type="Self.Brakes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Brakes">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oil_OilType">
+          <End Role="OilType" Type="Self.OilType" Multiplicity="1" />
+          <End Role="Oil" Type="Self.Oil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OilType">
+              <PropertyRef Name="OilTypeID" />
+            </Principal>
+            <Dependent Role="Oil">
+              <PropertyRef Name="OilType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oil_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Oil" Type="Self.Oil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Oil">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Brakes">
+          <End Role="Brakes" Type="Self.Brakes" Multiplicity="1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brakes">
+              <PropertyRef Name="BrakesID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="BrakesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Oil">
+          <End Role="Oil" Type="Self.Oil" Multiplicity="1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oil">
+              <PropertyRef Name="OilID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="OilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_TuneUp">
+          <End Role="TuneUp" Type="Self.TuneUp" Multiplicity="1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TuneUp">
+              <PropertyRef Name="TuneUpID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="TuneUpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TuneUp_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="TuneUp" Type="Self.TuneUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="TuneUp">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicle_Make">
+          <End Role="Make" Type="Self.Make" Multiplicity="1" />
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Make">
+              <PropertyRef Name="MakeID" />
+            </Principal>
+            <Dependent Role="Vehicle">
+              <PropertyRef Name="MakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicle_VehicleModel">
+          <End Role="VehicleModel" Type="Self.VehicleModel" Multiplicity="1" />
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleModel">
+              <PropertyRef Name="ModelID" />
+            </Principal>
+            <Dependent Role="Vehicle">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BreakDownModelStoreContainer">
+          <EntitySet Name="Brakes" EntityType="Self.Brakes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Make" EntityType="Self.Make" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Oil" EntityType="Self.Oil" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OilType" EntityType="Self.OilType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Services" EntityType="Self.Services" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TuneUp" EntityType="Self.TuneUp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleModel" EntityType="Self.VehicleModel" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Brakes_Vehicle" Association="Self.FK_Brakes_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="Brakes" EntitySet="Brakes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oil_OilType" Association="Self.FK_Oil_OilType">
+            <End Role="OilType" EntitySet="OilType" />
+            <End Role="Oil" EntitySet="Oil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oil_Vehicle" Association="Self.FK_Oil_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="Oil" EntitySet="Oil" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Brakes" Association="Self.FK_Services_Brakes">
+            <End Role="Brakes" EntitySet="Brakes" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Oil" Association="Self.FK_Services_Oil">
+            <End Role="Oil" EntitySet="Oil" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_TuneUp" Association="Self.FK_Services_TuneUp">
+            <End Role="TuneUp" EntitySet="TuneUp" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Vehicle" Association="Self.FK_Services_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TuneUp_Vehicle" Association="Self.FK_TuneUp_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="TuneUp" EntitySet="TuneUp" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicle_Make" Association="Self.FK_Vehicle_Make">
+            <End Role="Make" EntitySet="Make" />
+            <End Role="Vehicle" EntitySet="Vehicle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicle_VehicleModel" Association="Self.FK_Vehicle_VehicleModel">
+            <End Role="VehicleModel" EntitySet="VehicleModel" />
+            <End Role="Vehicle" EntitySet="Vehicle" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BreakDownModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Brake">
+          <Key>
+            <PropertyRef Name="BrakesID" />
+          </Key>
+          <Property Name="BrakesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="FrontBool" Type="Boolean" Nullable="false" />
+          <Property Name="RearBool" Type="Boolean" Nullable="false" />
+          <Property Name="ODOServiced" Type="Int32" Nullable="false" />
+          <Property Name="NextODO" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_Brakes_Vehicle" FromRole="Brakes" ToRole="Vehicle" />
+          <NavigationProperty Name="Services" Relationship="Self.FK_Services_Brakes" FromRole="Brakes" ToRole="Services" />
+        </EntityType>
+        <EntityType Name="Make">
+          <Key>
+            <PropertyRef Name="MakeID" />
+          </Key>
+          <Property Name="MakeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MakeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicle_Make" FromRole="Make" ToRole="Vehicle" />
+        </EntityType>
+        <EntityType Name="Oil">
+          <Key>
+            <PropertyRef Name="OilID" />
+          </Key>
+          <Property Name="OilID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="ODOService" Type="Int32" Nullable="false" />
+          <Property Name="OilType" Type="Int32" Nullable="false" />
+          <Property Name="NextODO" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="datetime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OilType1" Relationship="Self.FK_Oil_OilType" FromRole="Oil" ToRole="OilType" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_Oil_Vehicle" FromRole="Oil" ToRole="Vehicle" />
+          <NavigationProperty Name="Services" Relationship="Self.FK_Services_Oil" FromRole="Oil" ToRole="Services" />
+        </EntityType>
+        <EntityType Name="OilType">
+          <Key>
+            <PropertyRef Name="OilTypeID" />
+          </Key>
+          <Property Name="OilTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OilTypeName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Oils" Relationship="Self.FK_Oil_OilType" FromRole="OilType" ToRole="Oil" />
+        </EntityType>
+        <EntityType Name="Service">
+          <Key>
+            <PropertyRef Name="ServiceID" />
+          </Key>
+          <Property Name="ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OilID" Type="Int32" Nullable="false" />
+          <Property Name="BrakesID" Type="Int32" Nullable="false" />
+          <Property Name="TuneUpID" Type="Int32" Nullable="false" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Brake" Relationship="Self.FK_Services_Brakes" FromRole="Services" ToRole="Brakes" />
+          <NavigationProperty Name="Oil" Relationship="Self.FK_Services_Oil" FromRole="Services" ToRole="Oil" />
+          <NavigationProperty Name="TuneUp" Relationship="Self.FK_Services_TuneUp" FromRole="Services" ToRole="TuneUp" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_Services_Vehicle" FromRole="Services" ToRole="Vehicle" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TuneUp">
+          <Key>
+            <PropertyRef Name="TuneUpID" />
+          </Key>
+          <Property Name="TuneUpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="PlugsChanged" Type="Boolean" Nullable="false" />
+          <Property Name="BeltCondition" Type="Int32" Nullable="false" />
+          <Property Name="TireCondition" Type="Int32" Nullable="false" />
+          <Property Name="ODOServiced" Type="Int32" Nullable="false" />
+          <Property Name="NextODO" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Services" Relationship="Self.FK_Services_TuneUp" FromRole="TuneUp" ToRole="Services" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_TuneUp_Vehicle" FromRole="TuneUp" ToRole="Vehicle" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="VehicleID" />
+          </Key>
+          <Property Name="VehicleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MakeID" Type="Int32" Nullable="false" />
+          <Property Name="ModelID" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="ODO" Type="Int32" Nullable="false" />
+          <Property Name="Pin" Type="Int32" />
+          <Property Name="ID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Photo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Brakes" Relationship="Self.FK_Brakes_Vehicle" FromRole="Vehicle" ToRole="Brakes" />
+          <NavigationProperty Name="Make" Relationship="Self.FK_Vehicle_Make" FromRole="Vehicle" ToRole="Make" />
+          <NavigationProperty Name="Oils" Relationship="Self.FK_Oil_Vehicle" FromRole="Vehicle" ToRole="Oil" />
+          <NavigationProperty Name="Services" Relationship="Self.FK_Services_Vehicle" FromRole="Vehicle" ToRole="Services" />
+          <NavigationProperty Name="TuneUps" Relationship="Self.FK_TuneUp_Vehicle" FromRole="Vehicle" ToRole="TuneUp" />
+          <NavigationProperty Name="VehicleModel" Relationship="Self.FK_Vehicle_VehicleModel" FromRole="Vehicle" ToRole="VehicleModel" />
+        </EntityType>
+        <EntityType Name="VehicleModel">
+          <Key>
+            <PropertyRef Name="ModelID" />
+          </Key>
+          <Property Name="ModelID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Vehicles" Relationship="Self.FK_Vehicle_VehicleModel" FromRole="VehicleModel" ToRole="Vehicle" />
+        </EntityType>
+        <Association Name="FK_Brakes_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Brakes" Type="Self.Brake" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Brakes">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Brakes">
+          <End Role="Brakes" Type="Self.Brake" Multiplicity="1" />
+          <End Role="Services" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brakes">
+              <PropertyRef Name="BrakesID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="BrakesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicle_Make">
+          <End Role="Make" Type="Self.Make" Multiplicity="1" />
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Make">
+              <PropertyRef Name="MakeID" />
+            </Principal>
+            <Dependent Role="Vehicle">
+              <PropertyRef Name="MakeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oil_OilType">
+          <End Role="OilType" Type="Self.OilType" Multiplicity="1" />
+          <End Role="Oil" Type="Self.Oil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OilType">
+              <PropertyRef Name="OilTypeID" />
+            </Principal>
+            <Dependent Role="Oil">
+              <PropertyRef Name="OilType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oil_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Oil" Type="Self.Oil" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Oil">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Oil">
+          <End Role="Oil" Type="Self.Oil" Multiplicity="1" />
+          <End Role="Services" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Oil">
+              <PropertyRef Name="OilID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="OilID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_TuneUp">
+          <End Role="TuneUp" Type="Self.TuneUp" Multiplicity="1" />
+          <End Role="Services" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TuneUp">
+              <PropertyRef Name="TuneUpID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="TuneUpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Services_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="Services" Type="Self.Service" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TuneUp_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="TuneUp" Type="Self.TuneUp" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="VehicleID" />
+            </Principal>
+            <Dependent Role="TuneUp">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicle_VehicleModel">
+          <End Role="VehicleModel" Type="Self.VehicleModel" Multiplicity="1" />
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleModel">
+              <PropertyRef Name="ModelID" />
+            </Principal>
+            <Dependent Role="Vehicle">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BreakDownEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Brakes" EntityType="Self.Brake" />
+          <EntitySet Name="Makes" EntityType="Self.Make" />
+          <EntitySet Name="Oils" EntityType="Self.Oil" />
+          <EntitySet Name="OilTypes" EntityType="Self.OilType" />
+          <EntitySet Name="Services" EntityType="Self.Service" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TuneUps" EntityType="Self.TuneUp" />
+          <EntitySet Name="Vehicles" EntityType="Self.Vehicle" />
+          <EntitySet Name="VehicleModels" EntityType="Self.VehicleModel" />
+          <AssociationSet Name="FK_Brakes_Vehicle" Association="Self.FK_Brakes_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicles" />
+            <End Role="Brakes" EntitySet="Brakes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Brakes" Association="Self.FK_Services_Brakes">
+            <End Role="Brakes" EntitySet="Brakes" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicle_Make" Association="Self.FK_Vehicle_Make">
+            <End Role="Make" EntitySet="Makes" />
+            <End Role="Vehicle" EntitySet="Vehicles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oil_OilType" Association="Self.FK_Oil_OilType">
+            <End Role="OilType" EntitySet="OilTypes" />
+            <End Role="Oil" EntitySet="Oils" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oil_Vehicle" Association="Self.FK_Oil_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicles" />
+            <End Role="Oil" EntitySet="Oils" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Oil" Association="Self.FK_Services_Oil">
+            <End Role="Oil" EntitySet="Oils" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_TuneUp" Association="Self.FK_Services_TuneUp">
+            <End Role="TuneUp" EntitySet="TuneUps" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Services_Vehicle" Association="Self.FK_Services_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicles" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TuneUp_Vehicle" Association="Self.FK_TuneUp_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicles" />
+            <End Role="TuneUp" EntitySet="TuneUps" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicle_VehicleModel" Association="Self.FK_Vehicle_VehicleModel">
+            <End Role="VehicleModel" EntitySet="VehicleModels" />
+            <End Role="Vehicle" EntitySet="Vehicles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BreakDownModelStoreContainer" CdmEntityContainer="BreakDownEntities">
+          <EntitySetMapping Name="Brakes">
+            <EntityTypeMapping TypeName="BreakDownModel.Brake">
+              <MappingFragment StoreEntitySet="Brakes">
+                <ScalarProperty Name="BrakesID" ColumnName="BrakesID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="FrontBool" ColumnName="FrontBool" />
+                <ScalarProperty Name="RearBool" ColumnName="RearBool" />
+                <ScalarProperty Name="ODOServiced" ColumnName="ODOServiced" />
+                <ScalarProperty Name="NextODO" ColumnName="NextODO" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Makes">
+            <EntityTypeMapping TypeName="BreakDownModel.Make">
+              <MappingFragment StoreEntitySet="Make">
+                <ScalarProperty Name="MakeID" ColumnName="MakeID" />
+                <ScalarProperty Name="MakeName" ColumnName="MakeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Oils">
+            <EntityTypeMapping TypeName="BreakDownModel.Oil">
+              <MappingFragment StoreEntitySet="Oil">
+                <ScalarProperty Name="OilID" ColumnName="OilID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="ODOService" ColumnName="ODOService" />
+                <ScalarProperty Name="OilType" ColumnName="OilType" />
+                <ScalarProperty Name="NextODO" ColumnName="NextODO" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="datetime" ColumnName="datetime" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OilTypes">
+            <EntityTypeMapping TypeName="BreakDownModel.OilType">
+              <MappingFragment StoreEntitySet="OilType">
+                <ScalarProperty Name="OilTypeID" ColumnName="OilTypeID" />
+                <ScalarProperty Name="OilTypeName" ColumnName="OilTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="BreakDownModel.Service">
+              <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="OilID" ColumnName="OilID" />
+                <ScalarProperty Name="BrakesID" ColumnName="BrakesID" />
+                <ScalarProperty Name="TuneUpID" ColumnName="TuneUpID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="BreakDownModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TuneUps">
+            <EntityTypeMapping TypeName="BreakDownModel.TuneUp">
+              <MappingFragment StoreEntitySet="TuneUp">
+                <ScalarProperty Name="TuneUpID" ColumnName="TuneUpID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="PlugsChanged" ColumnName="PlugsChanged" />
+                <ScalarProperty Name="BeltCondition" ColumnName="BeltCondition" />
+                <ScalarProperty Name="TireCondition" ColumnName="TireCondition" />
+                <ScalarProperty Name="ODOServiced" ColumnName="ODOServiced" />
+                <ScalarProperty Name="NextODO" ColumnName="NextODO" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehicles">
+            <EntityTypeMapping TypeName="BreakDownModel.Vehicle">
+              <MappingFragment StoreEntitySet="Vehicle">
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="MakeID" ColumnName="MakeID" />
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="ODO" ColumnName="ODO" />
+                <ScalarProperty Name="Pin" ColumnName="Pin" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleModels">
+            <EntityTypeMapping TypeName="BreakDownModel.VehicleModel">
+              <MappingFragment StoreEntitySet="VehicleModel">
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
